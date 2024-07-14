@@ -22,17 +22,25 @@ export class OrdersController {
   async findAll(
     @Payload() pageOptionsDto: PageOptionsDto
   ) {
+
     return this.ordersService.findAll(pageOptionsDto);
+
   }
 
   @MessagePattern({ cmd: 'get_order_header_by_id' })
-  async findOne(@Payload() id: number) {
+  async findOne(
+    @Payload('id') id: number
+  ) {
+
     return this.ordersService.findOne(id);
+
   }
 
   @MessagePattern({ cmd: 'change_order_header_status' })
   async changedOrderStatus(){
+
     throw new NotImplementedException();
+    
   }
 
   // @MessagePattern({ cmd: 'update_order_header' })
