@@ -2,6 +2,7 @@ import { Controller, NotImplementedException } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { PageOptionsDto } from '../../helpers/paginations/dto/page-options.dto';
 // import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Controller()
@@ -9,22 +10,28 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @MessagePattern({ cmd: 'create_order_header'})
-  create(@Payload() createOrderDto: CreateOrderDto) {
+  async create(
+    @Payload() createOrderDto: CreateOrderDto
+  ) {
+
     return this.ordersService.create(createOrderDto);
+
   }
 
   @MessagePattern({ cmd: 'get_orders_headers_paginated'})
-  findAll() {
-    return this.ordersService.findAll();
+  async findAll(
+    @Payload() pageOptionsDto: PageOptionsDto
+  ) {
+    return this.ordersService.findAll(pageOptionsDto);
   }
 
   @MessagePattern({ cmd: 'get_order_header_by_id' })
-  findOne(@Payload() id: number) {
+  async findOne(@Payload() id: number) {
     return this.ordersService.findOne(id);
   }
 
   @MessagePattern({ cmd: 'change_order_header_status' })
-  changedOrderStatus(){
+  async changedOrderStatus(){
     throw new NotImplementedException();
   }
 
