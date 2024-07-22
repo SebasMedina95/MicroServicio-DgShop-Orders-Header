@@ -1,8 +1,14 @@
 import { Controller, NotImplementedException } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
+
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
+
 import { PageOptionsDto } from '../../helpers/paginations/dto/page-options.dto';
+import { CustomError } from '../../helpers/errors/custom.error';
+
+import { ApiTransactionResponse } from '../../utils/ApiResponse';
+import { IOrders } from './interfaces/orders.interface';
 // import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Controller()
@@ -12,7 +18,7 @@ export class OrdersController {
   @MessagePattern({ cmd: 'create_order_header'})
   async create(
     @Payload() createOrderDto: CreateOrderDto
-  ) {
+  ): Promise<ApiTransactionResponse<IOrders | CustomError>> {
 
     return this.ordersService.create(createOrderDto);
 

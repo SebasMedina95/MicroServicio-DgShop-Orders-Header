@@ -1,14 +1,25 @@
 import { Injectable } from '@nestjs/common';
+
 import { CreateOrderDto } from './dto/create-order.dto';
+
 import { PageOptionsDto } from '../../helpers/paginations/dto/page-options.dto';
+import { CustomError } from '../../helpers/errors/custom.error';
+import { EResponseCodes } from '../../constants/ResponseCodesEnum';
+import { ApiTransactionResponse } from '../../utils/ApiResponse';
+
+import { IOrders } from './interfaces/orders.interface';
 // import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Injectable()
 export class OrdersService {
 
-  async create(createOrderDto: CreateOrderDto) {
+  async create(createOrderDto: CreateOrderDto): Promise<ApiTransactionResponse<IOrders | CustomError>> {
 
-    return 'This action adds a new order';
+    return new ApiTransactionResponse(
+      createOrderDto,
+      EResponseCodes.INFO,
+      "Test pasando la información del DTO."
+    );
     
   }
 
